@@ -539,7 +539,7 @@ cdef jobject convert_python_to_jobject(JNIEnv *j_env, definition, obj) except *:
 
     elif definition[0] == '[':
         conversions = {
-            int: 'I',
+            int: 'J',
             bool: 'Z',
             float: 'F',
             unicode: 'Ljava/lang/String;',
