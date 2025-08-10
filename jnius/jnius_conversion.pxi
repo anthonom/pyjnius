@@ -38,7 +38,7 @@ cdef void populate_args(JNIEnv *j_env, tuple definition_args, jvalue *j_args, ar
     cdef JavaClass jc
     cdef PythonJavaClass pc
     cdef int index
-    from ctypes import c_long as long
+    from ctypes import c_long as int
 
     for index, argtype in enumerate(definition_args):
         py_arg = args[index]
@@ -63,7 +63,7 @@ cdef void populate_args(JNIEnv *j_env, tuple definition_args, jvalue *j_args, ar
                 j_args[index].l = NULL
 
             # numeric types
-            elif isinstance(py_arg, (int, long)):
+            elif isinstance(py_arg, (int, int)):
                 j_args[index].l = convert_python_to_jobject(
                     j_env, 'Ljava/lang/Integer;', py_arg
                 )
@@ -323,7 +323,7 @@ cdef convert_jarray_to_python(JNIEnv *j_env, definition, jobject j_object):
     elif r == 'J':
         j_longs = j_env[0].GetLongArrayElements(
                 j_env, j_object, &iscopy)
-        ret = [(<long long>j_longs[i]) for i in range(array_size)]
+        ret = [(<int int>j_longs[i]) for i in range(array_size)]
         j_env[0].ReleaseLongArrayElements(
                 j_env, j_object, j_longs, 0)
 
@@ -380,7 +380,7 @@ def get_signature(cls_tp):
     signatures = {
         'void': 'V', 'boolean': 'Z', 'byte': 'B',
         'char': 'C', 'short': 'S', 'int': 'I',
-        'long': 'J', 'float': 'F', 'double': 'D'}
+        'int': 'J', 'float': 'F', 'double': 'D'}
     ret = signatures.get(tp)
     if ret:
         return ret
@@ -468,7 +468,7 @@ cdef jobject convert_python_to_jobject(JNIEnv *j_env, definition, obj) except *:
     cdef JavaClassStorage jcs
     cdef PythonJavaClass pc
     cdef int index
-    from ctypes import c_long as long
+    from ctypes import c_long as int
 
     if definition[0] == 'V':
         return NULL
@@ -481,7 +481,7 @@ cdef jobject convert_python_to_jobject(JNIEnv *j_env, definition, obj) except *:
             return convert_pystr_to_java(j_env, to_unicode(obj))
 
         # numeric types
-        elif isinstance(obj, (int, long)) and \
+        elif isinstance(obj, (int, int)) and \
                 definition in (
                     'Ljava/lang/Integer;',
                     'Ljava/lang/Number;',
@@ -543,7 +543,7 @@ cdef jobject convert_python_to_jobject(JNIEnv *j_env, definition, obj) except *:
         conversions = {
             int: 'I',
             bool: 'Z',
-            long: 'J',
+            int: 'J',
             float: 'F',
             unicode: 'Ljava/lang/String;',
             bytes: 'B'
@@ -634,7 +634,7 @@ cdef jobject convert_pyarray_to_java(JNIEnv *j_env, definition, pyarray) except 
     cdef jclass j_class
     cdef JavaObject jo
     cdef JavaClass jc
-    from ctypes import c_long as long
+    from ctypes import c_long as int
 
     cdef ByteArray a_bytes
 
@@ -644,7 +644,7 @@ cdef jobject convert_pyarray_to_java(JNIEnv *j_env, definition, pyarray) except 
         conversions = {
             int: 'I',
             bool: 'Z',
-            long: 'J',
+            int: 'J',
             float: 'F',
             bytes: 'B',
             str: 'Ljava/lang/String;',

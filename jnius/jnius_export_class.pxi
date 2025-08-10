@@ -605,7 +605,7 @@ cdef class JavaField(object):
         elif r == 'J':
             j_long = j_env[0].GetLongField(
                     j_env, j_self, self.j_field)
-            ret = <long long>j_long
+            ret = <int int>j_long
         elif r == 'F':
             j_float = j_env[0].GetFloatField(
                     j_env, j_self, self.j_field)
@@ -729,7 +729,7 @@ cdef class JavaField(object):
         elif r == 'J':
             j_long = j_env[0].GetStaticLongField(
                     j_env, self.j_cls, self.j_field)
-            ret = <long long>j_long
+            ret = <int int>j_long
         elif r == 'F':
             j_float = j_env[0].GetStaticFloatField(
                     j_env, self.j_cls, self.j_field)
@@ -945,7 +945,7 @@ cdef class JavaMethod(object):
             with nogil:
                 j_long = j_env[0].CallLongMethodA(
                         j_env, j_self, self.j_method, j_args)
-            ret = <long long>j_long
+            ret = <int int>j_long
         elif r == 'F':
             with nogil:
                 j_float = j_env[0].CallFloatMethodA(
@@ -1033,7 +1033,7 @@ cdef class JavaMethod(object):
             with nogil:
                 j_long = j_env[0].CallStaticLongMethodA(
                         j_env, self.j_cls, self.j_method, j_args)
-            ret = <long long>j_long
+            ret = <int int>j_long
         elif r == 'F':
             with nogil:
                 j_float = j_env[0].CallStaticFloatMethodA(
