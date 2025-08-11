@@ -23,7 +23,7 @@ cdef extern from 'dlfcn.h' nogil:
     unsigned int RTLD_DEEPBIND
 
     unsigned int RTLD_DEFAULT
-    int unsigned int RTLD_NEXT
+    void *RTLD_NEXT
 
 
 cdef extern from "jni.h":
