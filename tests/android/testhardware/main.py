@@ -1,7 +1,7 @@
 from time import sleep
 from jnius import autoclass
 
-print '-- test hardware start!'
+print ('-- test hardware start!')
 
 Hardware = autoclass('org.renpy.android.Hardware')
 print 'DPI is', Hardware.getDPI()
@@ -11,4 +11,4 @@ for x in xrange(20):
     print Hardware.accelerometerReading()
     sleep(.1)
 
-print '-- test hardware done!'
+print ('-- test hardware done!')
