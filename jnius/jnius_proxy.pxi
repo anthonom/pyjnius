@@ -157,7 +157,7 @@ cdef jobject invoke0(JNIEnv *j_env, jobject j_this, jobject j_proxy, jobject
         return NULL
 
 # now we need to create a proxy and pass it an invocation handler
-cdef jobject create_proxy_instance(JNIEnv *j_env, py_obj, j_interfaces, javacontext):
+ def create_proxy_instance(JNIEnv *j_env, py_obj, j_interfaces, javacontext):
     from .reflect import autoclass, find_javaclass
     Proxy = autoclass('java.lang.reflect.Proxy')
     NativeInvocationHandler = autoclass('org.jnius.NativeInvocationHandler')
