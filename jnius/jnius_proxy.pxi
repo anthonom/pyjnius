@@ -166,7 +166,7 @@ cdef jobject create_proxy_instance(JNIEnv *j_env, py_obj, j_interfaces, javacont
     j_interfaces = [find_javaclass(x) for x in j_interfaces]
 
     # Pass Python object reference in a way JNI expects
-    cdef jobject nih = NativeInvocationHandler(<jlong><size_t>py_obj)  # instantiate Java handler
+    nih = NativeInvocationHandler(int(py_obj))  # or int(<size_t>py_obj), if py_obj is a pointer
 
     # Store Python object's pointer in 'ptr' field of handler
     handlerClass = j_env[0].GetObjectClass(j_env, nih)
