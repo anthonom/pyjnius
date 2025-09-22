@@ -31,7 +31,7 @@ cdef class PythonJavaClass(object):
         javacontext = 'system'
         if hasattr(self, '__javacontext__'):
             javacontext = self.__javacontext__
-        self.j_self = create_proxy_instance(get_jnienv(), self,
+        self.j_self = create_proxy_instance(self,
             self.__javainterfaces__, javacontext)
 
         # discover all the java method implemented
