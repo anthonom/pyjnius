@@ -157,38 +157,31 @@ cdef jobject invoke0(JNIEnv *j_env, jobject j_this, jobject j_proxy, jobject
         return NULL
 
 # now we need to create a proxy and pass it an invocation handler
-cdef create_proxy_instance(JNIEnv *j_env, py_obj, j_interfaces, javacontext):
-    from .reflect import autoclass
+cdef jobject create_proxy_instance(JNIEnv *j_env, py_obj, j_interfaces, javacontext):
+    from .reflect import autoclass, find_javaclass
     Proxy = autoclass('java.lang.reflect.Proxy')
     NativeInvocationHandler = autoclass('org.jnius.NativeInvocationHandler')
 
     # convert strings to Class
     j_interfaces = [find_javaclass(x) for x in j_interfaces]
 
-    cdef JavaClass nih = NativeInvocationHandler(<long long><void *>py_obj)
-    cdef JNINativeMethod invoke_methods[1]
-    invoke_methods[0].name = 'invoke0'
-    invoke_methods[0].signature = '(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;'
-    invoke_methods[0].fnPtr = <void *>&invoke0
-    j_env[0].RegisterNatives(j_env, nih.j_cls, <JNINativeMethod *>invoke_methods, 1)
+    # Pass Python object reference in a way JNI expects
+    cdef jobject nih = NativeInvocationHandler()  # instantiate Java handler
+    nih.setPythonObject(py_obj)  # assume your fork has this helper method
 
     # create the proxy and pass it the invocation handler
-    cdef JavaClass j_obj
     if javacontext == 'app':
         Thread = autoclass('java.lang.Thread')
         classLoader = Thread.currentThread().getContextClassLoader()
-        j_obj = Proxy.newProxyInstance(
-                classLoader, j_interfaces, nih)
+        
 
     elif javacontext == 'system':
         ClassLoader = autoclass('java.lang.ClassLoader')
         classLoader = ClassLoader.getSystemClassLoader()
-        j_obj = Proxy.newProxyInstance(
-                classLoader, j_interfaces, nih)
 
     else:
         raise Exception(
                 'Invalid __javacontext__ {}, must be app or system.'.format(
                     javacontext))
-
+    j_obj = Proxy.newProxyInstance(classLoader, j_interfaces, nih)
     return j_obj
