@@ -163,10 +163,15 @@ def create_proxy_instance(py_obj, j_interfaces, javacontext):
     NativeInvocationHandler = autoclass('org.jnius.NativeInvocationHandler')
 
     # convert strings to Class
-    j_interfaces = [find_javaclass(x) for x in j_interfaces]
+    if isinstance(j_interfaces[0], str):
+        j_interfaces = [find_javaclass(x) for x in j_interfaces]
 
     # Pass Python object reference in a way JNI expects
-    nih = NativeInvocationHandler(<jlong><size_t>py_obj)  # or int(<size_t>py_obj), if py_obj is a pointer
+    import sys
+    if sys.maxsize > 2**32:
+        nih = NativeInvocationHandler(<jlong><size_t>py_obj)  # or int(<size_t>py_obj), if py_obj is a pointer
+    else:
+        nih = NativeInvocationHandler(<jint><size_t>py_obj)
     
 
     # create the proxy and pass it the invocation handler
