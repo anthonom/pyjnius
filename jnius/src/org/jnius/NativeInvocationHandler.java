@@ -8,6 +8,7 @@ public class NativeInvocationHandler implements InvocationHandler {
 
     public NativeInvocationHandler(long ptr) {
         this.ptr = ptr;
+        System.out.println("NativeInvocationHandler constructed with ptr: " + ptr);
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) {
