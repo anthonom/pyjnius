@@ -57,7 +57,7 @@ cdef void populate_args(JNIEnv *j_env, tuple definition_args, jvalue *j_args, ar
              try:
                  j_args[index].j = <long long>int(py_arg)
              except Exception:
-+                raise JavaException('Invalid python object for this argument. Want long, got type {} value {}'.format(type(py_arg), py_arg))
+                 raise JavaException('Invalid python object for this argument. Want long, got type {} value {}'.format(type(py_arg), py_arg))
         elif argtype == 'F':
             j_args[index].f = py_arg
         elif argtype == 'D':
