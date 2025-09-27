@@ -16,6 +16,7 @@ cdef void release_args(JNIEnv *j_env, tuple definition_args, pass_by_reference, 
 
     for index, argtype in enumerate(definition_args):
         py_arg = args[index]
+        print("populate_args DEBUG: index:", index, "argtype:", argtype, "py_arg type:", type(py_arg), "value:", py_arg)
         if argtype[0] == 'L':
             if py_arg is None:
                 j_args[index].l = NULL
