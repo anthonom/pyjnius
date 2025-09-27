@@ -54,6 +54,7 @@ cdef void populate_args(JNIEnv *j_env, tuple definition_args, jvalue *j_args, ar
             j_args[index].i = py_arg
         elif argtype == 'J':
              # PATCH: ensure py_arg is a plain Python int, then cast to long long
+             print("DEBUG: argtype=J, py_arg type:", type(py_arg), "value:", py_arg)
              try:
                  j_args[index].j = <long long>int(py_arg)
              except Exception:
