@@ -1,3 +1,4 @@
+print("DEBUG: jnius_proxy.pxi loaded")
 class java_method(object):
     def __init__(self, signature, name=None):
         super(java_method, self).__init__()
