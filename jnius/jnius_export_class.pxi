@@ -365,6 +365,12 @@ cdef class JavaClass(object):
             # the lifetime of the call
             holds = None
             if len(args):
+                print("DEBUG: About to call populate_args")
+                print("    j_env:", j_env)
+                print("    d_args:", d_args)
+                print("    j_args:", j_args)
+                print("    args_:", args_)
+                print("    type(args_):", type(args_))
                 j_args = <jvalue *>malloc(sizeof(jvalue) * len(d_args))
                 if j_args == NULL:
                     raise MemoryError('Unable to allocate memory for java args')
