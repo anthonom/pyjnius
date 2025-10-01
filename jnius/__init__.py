@@ -13,6 +13,7 @@ from .env import get_java_setup
 
 import os
 import sys
+print("DEBUG: jnius/__init__.py loaded")
 if sys.platform == 'win32' and sys.version_info >= (3, 8):
     path = os.path.dirname(__file__)
     java = get_java_setup(sys.platform)
