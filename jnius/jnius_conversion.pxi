@@ -32,7 +32,7 @@ cdef void release_args(JNIEnv *j_env, tuple definition_args, pass_by_reference, 
                     pass
             j_env[0].DeleteLocalRef(j_env, j_args[index].l)
 
-    cdef void populate_args(JNIEnv *j_env, tuple definition_args, jvalue *j_args, args) except *:
+cdef void populate_args(JNIEnv *j_env, tuple definition_args, jvalue *j_args, args) except *:
     print("populate_args DEBUG: called with definition_args:", definition_args, "args:", args)
     # do the conversion from a Python object to Java from a Java definition
     cdef JavaClassStorage jcs
