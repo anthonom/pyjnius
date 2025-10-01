@@ -285,6 +285,7 @@ cdef class JavaClass(object):
         self.resolve_fields()
 
     cdef void call_constructor(self, args, kwargs) except *:
+        print("DEBUG: Entered call_constructor with args:", args)
         # the goal is to find the class constructor, and call it with the
         # correct arguments.
         cdef jvalue *j_args = NULL
@@ -364,6 +365,7 @@ cdef class JavaClass(object):
             # holds is a list of objects that need to be kept around for 
             # the lifetime of the call
             holds = None
+            print("DEBUG: call_constructor called with args:", args)
             if len(args):
                 print("DEBUG: About to call populate_args")
                 print("    j_env address:", <size_t>j_env)
