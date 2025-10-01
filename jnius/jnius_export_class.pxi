@@ -1,3 +1,4 @@
+print("DEBUG: jnius_export_class.pxi loaded")
 from cpython cimport PyObject
 from warnings import warn
 
