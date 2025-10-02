@@ -1,4 +1,8 @@
 print("DEBUG: jnius_proxy.pxi loaded")
+cdef extern from "jni.h":
+    ctypedef long jlong
+    ctypedef int jint
+    
 class java_method(object):
     def __init__(self, signature, name=None):
         super(java_method, self).__init__()
@@ -158,7 +162,8 @@ cdef jobject invoke0(JNIEnv *j_env, jobject j_this, jobject j_proxy, jobject
         return NULL
 
 # now we need to create a proxy and pass it an invocation handler
-def create_proxy_instance(py_obj, j_interfaces, javacontext):
+cpdef create_proxy_instance(py_obj, j_interfaces, javacontext):
+    print("***** ENTERED create_proxy_instance *****", flush=True)
     from .reflect import autoclass, find_javaclass
     Proxy = autoclass('java.lang.reflect.Proxy')
     NativeInvocationHandler = autoclass('org.jnius.NativeInvocationHandler')
@@ -169,10 +174,9 @@ def create_proxy_instance(py_obj, j_interfaces, javacontext):
 
     # Pass Python object reference in a way JNI expects
     import sys
-    if sys.maxsize > 2**32:
-        nih = NativeInvocationHandler(<jlong><size_t>py_obj)  # or int(<size_t>py_obj), if py_obj is a pointer
-    else:
-        nih = NativeInvocationHandler(<jint><size_t>py_obj)
+    py_obj_ptr = id(py_obj)
+    print(f"DEBUG: create_proxy_instance py_obj_ptr type: {type(py_obj_ptr)} value: {py_obj_ptr}")
+    nih = NativeInvocationHandler(py_obj_ptr)
     
 
     # create the proxy and pass it the invocation handler
